@@ -3,7 +3,8 @@ const token = localStorage.getItem('accessToken')
 const instance = axios.create({
     baseURL: 'https://entermate-backend.vercel.app/api/',
     timeout: 1000,
-    headers: {'x-access-token': token, 'Content-Type': 'application/json'}
+    headers: {'x-access-token': token, 'Content-Type': 'application/json'},
+    withCredentials: true
 
   });
 
