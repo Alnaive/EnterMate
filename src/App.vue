@@ -3,53 +3,23 @@ import { useDark, useToggle } from '@vueuse/core';
 import { RouterLink, RouterView } from 'vue-router'
 import { Icon } from '@iconify/vue';
 import BottomNav from './components/BottomNav.vue';
+import Navbar from './components/Navbar.vue';
+
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
+
+
+
 </script>
 
 <template>
-  <div class="drawer">
-  <input id="my-drawer-3" type="checkbox" class="drawer-toggle" /> 
-  <div class="drawer-content flex flex-col bg-white dark:bg-gray-800">
-    <!-- Navbar -->
-    <div class="w-full navbar dark:bg-gray-800 shadow-lg sticky top-0 z-30 mb-5">
-      <div class="flex-none lg:hidden">
-        <label for="my-drawer-3" class="btn btn-square btn-ghost">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-        </label>
-      </div> 
-      <div class="flex-1 px-2 mx-2 font-bold text-lg space-x-3">
-         <!-- <label for="my-drawer-3" class="invisible md:visible" ><Icon icon="akar-icons:three-line-horizontal" width="32" height="32" /></label> -->
-          <h1 class="">EnterMate</h1>
-      </div>
-      <div class="flex-none hidden lg:block">
-        <ul class="menu menu-horizontal">
-          <!-- Navbar menu content here -->
-          <li><a>Login</a></li>
-          <li>
-              <button @click="toggleDark()" >
-                <Icon icon="bi:moon-fill" width="24" height="24" v-if="isDark"/> 
-                <Icon icon="akar-icons:sun-fill" width="28" height="28" v-else/>
-              </button>
-          </li>
-        </ul>
-      </div>
-    </div>
-      <BottomNav/>
-    <!-- Page content here -->
-    <div class="h-auto bg-white dark:bg-gray-800 ">
-      <RouterView />
-    </div>
-  </div> 
-  <div class="drawer-side">
-    <label for="my-drawer-3" class="drawer-overlay"></label> 
-    <ul class="menu p-4 w-80 bg-base-100">
-      <!-- Sidebar content here -->
-      <li><a>Sidebar Item 1</a></li>
-      <li><a>Sidebar Item 2</a></li>
-    </ul>
+<div class="min-h-screen bg-white dark:bg-gray-800">
+  <Navbar/>
+
+  <!-- <BottomNav/> -->
+  <div  class=" h-auto ">
+        <RouterView />
   </div>
 </div>
-
 </template>
 
