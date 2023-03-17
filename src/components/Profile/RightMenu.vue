@@ -14,13 +14,8 @@
                 </a>
                 <router-link :to="`/update/profile/${dataUser.id}/${item._id}`">Edit</router-link>
                 </div>
-                
-
             </li>
         </ul>
-        <div class="mt-5">
-            
-        </div>
     </div>
 </template>
 <script setup>

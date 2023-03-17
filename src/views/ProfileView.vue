@@ -4,11 +4,10 @@
     </div> -->
         <div class=" " v-if="profile.editMode"><editUser/></div>
         <div class="" v-else> <HeaderProfile/></div>
-            <div class="flex container mx-auto relative mt-2">
-                <div class="absolute top-0 right-0 h-16 w-16 ...">
-                    <button class="btn btn-primary" @click="profile.editMode = !profile.editMode">Edit</button>
-                </div>
-
+            <div v-if="auth.user.username == route.params.id" class="flex justify-between container mx-auto relative mt-2">
+                    <button v-if="profile.editMode" class="btn btn-secondary" @click="deleteUser()">Delete Account</button>
+                    <button v-if="!profile.editMode" class="btn btn-primary" @click="profile.editMode = !profile.editMode">Edit</button>
+                    <button v-if="profile.editMode" class="btn btn-primary" @click="profile.editMode = !profile.editMode">Close Edit Mode</button>
             </div>
 
             <div class="flex container mx-auto justify-center space-x-8 mt-4  p-4 rounded-xl" >
@@ -25,12 +24,12 @@
                         </div>
                     </div>
                 </div>
-                <RightMenu/>
+                <div v-if="!profile.editMode"><RightMenu/></div>
+                <div v-else><editAbout/></div>
             </div>
 </template>
 <script setup>
 import { onMounted, ref,reactive, computed, watch } from 'vue';
-import {useAuth} from '@/stores/authStore';
 import axiosInstance from '../services/authHeader.js';
 import { useRouter, useRoute } from 'vue-router'
 import HeaderProfile from '../components/Profile/HeaderProfile.vue';
@@ -40,20 +39,16 @@ import RightMenu from '../components/Profile/RightMenu.vue';
 import LeftMenu from '../components/Profile/LeftMenu.vue';
 import editProfile from '../components/Profile/Edit/editProfile.vue';
 import editUser from '../components/Profile/Edit/editUser.vue';
+import editAbout from '../components/Profile/Edit/editAbout.vue';
 import BasicInfoCard from '../components/Profile/BasicInfoCard.vue';
 import {useProfile} from '@/stores/profileStore';
-const profile = useProfile();
+import {useAuth} from '@/stores/authStore';
 
-    const route=useRoute();
+const profile = useProfile();
+const route = useRoute();
+const router = useRouter();
 const auth = useAuth();
 
-const profileForm = ref(false);
-const dataProfile = ref({});
-const formName = reactive({
-    name: null,
-    username: null,
-    image: null
-})
 const formEmail = {
     email: auth.user.email
 }
@@ -68,40 +63,12 @@ const formEmail = {
         console.log(error);
     });
 }
-const { updateProfile } = useAuth();
-const { user } = useAuth();
 
-const userData = ref({});
-
-const updateData = async (id, updatedUserData) => {
-  await updateProfile(id, updatedUserData);
-  userData.value = user.value;
+ function deleteUser(){
+    auth.deleteAccount();
+   router.push({name:'login'})
 }
-
-async function saveProfile(id, formData){
-    if(formName.name || formName.username){
-    await updateData(id, formData);
-    profileForm.value = false
-    }
-}
-
-// async function fetchData() {
-//     await auth.getUser();
-//     try {
-//         const userResult = await axiosInstance.get(`/user/profile/${route.params.id}`);
-//         dataUser.value = userResult.data;
-
-//         const profileResult = await axiosInstance.get(`/profile/user/${userResult.data.id}`);
-//         dataProfile.value = profileResult.data;
-//     } catch (err) {
-//         console.error(err);
-//     }
-// }
-
-// onMounted(fetchData);
-
-watch(() => auth.user, (newValue, oldValue) => {
-    console.log('changed')
-});
-
+onMounted(async() => {
+    await auth.getUser();
+})
 </script>

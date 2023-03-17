@@ -106,17 +106,16 @@ const formRegister = {
     passwordConfirmation: null,
 }
 
-function register(){
-    axiosInstance.post('/auth/signup/', JSON.stringify(formRegister))
-    .then(function (res) {
+async function register(){
+    try {
+    const res = await axiosInstance.post('/auth/signup/', JSON.stringify(formRegister))
         if(res.data.accessToken){
-            auth.setToken(res);
-        }
-        router.push('/')
-    })
-    .catch(function (error) {
+          auth.setToken(res);
+          router.push({name: 'home'})
+        }   
+    } catch (error) {
         errorRegister.value = error.response.data.message;
-    });
+    }
 }
 
 const { cookies } = useCookies();

@@ -10,7 +10,7 @@
                                 <img :src="dataUser.image" />
                             </div>
                         </div>
-                        <div class="ml-4 w-72 ">
+                        <div class="ml-4  ">
                             <h2  class="text-2xl text-bold">{{ dataUser.name }}</h2>
                             <h2 class="text-lg" >@{{ dataUser.username }}</h2>
                             <div class="flex space-x-4">

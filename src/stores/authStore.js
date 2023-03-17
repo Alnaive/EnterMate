@@ -21,6 +21,7 @@ export const useAuth = defineStore('auth', () => {
 
     function removeToken(){
         token.value = null;
+        user.value = [];
         localStorage.removeItem('accessToken');
     }
 
@@ -38,10 +39,10 @@ export const useAuth = defineStore('auth', () => {
 
     }
 
-    const updateUser = async (id, updatedUserData) => {
-        const { data: updatedUser } = await axiosInstance.put(`/user/updateProfile/${id}`, updatedUserData);
-        user.value = updatedUser; //update user in Pinia state
-    }
+    async function deleteAccount(){
+        await axiosInstance.delete(`/user/delete/${user.value.id}`);
+        removeToken();
 
-    return {token, user, isAuthenticated, setToken, removeToken, getUser, updatedUser, updateUser}
+     }
+    return {token, user, isAuthenticated, setToken, removeToken, getUser, updatedUser, deleteAccount}
 });

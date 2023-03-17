@@ -2,7 +2,8 @@
   <div class="flex justify-center items-center container mx-auto">
     <div v-if="!auth.token">Please Login</div>
     <div v-else>
-      <chain-card/>
+      Auth Success
+      <!-- <chain-card/> -->
     </div>
   </div>
 </template>

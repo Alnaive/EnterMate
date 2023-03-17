@@ -37,7 +37,8 @@ import { useAuth} from "@/stores/authStore";
 const auth = useAuth()
 const router = useRouter()
 function logout(){
-  auth.removeToken()
+  auth.removeToken();
+  auth.getUser();
   router.push({name:'login'})
 }
 
