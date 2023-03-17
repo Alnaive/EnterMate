@@ -20,7 +20,7 @@
                             <div class="mb-5" v-if="auth.user.username == route.params.id">
                                 <create-post-card/>
                             </div>
-                            <chainCard/>
+                            <!-- <chainCard/> -->
                         </div>
                     </div>
                 </div>
