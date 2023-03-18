@@ -1,5 +1,8 @@
 <template>
-    <ul v-for="data in dataProfile" :key="data" class=" flex flex-col space-y-2 bg-base-100 w-56 p-4 rounded-box text-lg">
+    <div class="vld-parent">
+        <loading v-model:active="isLoading" :is-full-page="fullPage" :loader="loader" />
+    </div>
+    <ul v-for="data in dataProfile" :key="data" class=" vld-parent flex flex-col space-y-2 bg-base-100 w-56 p-4 rounded-box text-lg">
         <li class="flex gap-2 text-lg font-bold"><Icon icon="mdi:person-card-details" width="32" height="32" /> Profile Information</li>
         <li class="flex items-center gap-2">
             <Icon icon="material-symbols:person-pin" width="32" height="32" />
@@ -34,9 +37,16 @@ import { onMounted, ref } from 'vue';
 import axiosInstance from '../../services/authHeader.js';
 import { useRouter, useRoute } from 'vue-router'
 import { Icon } from '@iconify/vue';
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/css/index.css';
 const route=useRoute();
 const dataUser = ref({});
 const dataProfile = ref({});
+
+const isLoading = ref(true)
+const loader = 'spinner'
+const fullPage = ref(false)
+
 async function fetchData() {
     try {
         const userResult = await axiosInstance.get(`/user/profile/${route.params.id}`);
@@ -44,6 +54,7 @@ async function fetchData() {
 
         const profileResult = await axiosInstance.get(`/profile/user/${userResult.data.id}`);
         dataProfile.value = profileResult.data;
+        isLoading.value = false
     } catch (err) {
         console.error(err);
     }

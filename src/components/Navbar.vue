@@ -30,7 +30,6 @@ import {ref, onMounted, computed, watchEffect} from 'vue';
 import { useDark, useToggle } from '@vueuse/core';
 import { RouterLink, useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue';
-import { storeToRefs } from 'pinia'
 
 import { useAuth} from "@/stores/authStore";
 
@@ -38,20 +37,12 @@ const auth = useAuth()
 const router = useRouter()
 function logout(){
   auth.removeToken();
-  auth.getUser();
   router.push({name:'login'})
 }
 
 onMounted( async () => {
  await auth.getUser();
 })
-
-// const user = computed(() => {
-//   return auth.user
-// })
-// watchEffect(() => {
-//   console.log(user.value);
-// });
 
 const isDark = useDark();
 const toggleDark = useToggle(isDark);

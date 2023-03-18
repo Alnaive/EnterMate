@@ -21,7 +21,7 @@ export const useAuth = defineStore('auth', () => {
 
     function removeToken(){
         token.value = null;
-        user.value = [];
+        user.value = null;
         localStorage.removeItem('accessToken');
     }
 

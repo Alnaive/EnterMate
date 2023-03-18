@@ -1,4 +1,7 @@
 <template>
+    <div class="vld-parent">
+        <loading v-model:active="isLoading" :is-full-page="fullPage" :loader="loader" metaIcon/>
+    </div>
     <div class="hero bg-white dark:bg-base-100">
         <div class="hero-content flex-col lg:flex-row-reverse ">
             <div class="text-center lg:text-left">
@@ -84,8 +87,12 @@ import { useCookies } from "vue3-cookies";
 import { useRouter, useRoute } from 'vue-router'
 import { useAuth} from "@/stores/authStore";
 import axiosInstance  from "../services/authHeader.js";
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/css/index.css';
 const auth = useAuth();
-
+const isLoading = ref(false)
+const loader = 'dots'
+const fullPage = ref(false)
 const router = useRouter()
 const signup = ref(false);
 function showSignup(){
@@ -108,13 +115,16 @@ const formRegister = {
 
 async function register(){
     try {
+    isLoading.value = true;
     const res = await axiosInstance.post('/auth/signup/', JSON.stringify(formRegister))
         if(res.data.accessToken){
           auth.setToken(res);
+          isLoading.value = false;
           router.push({name: 'home'})
         }   
     } catch (error) {
         errorRegister.value = error.response.data.message;
+        isLoading.value = false;
     }
 }
 
@@ -132,14 +142,17 @@ async function login() {
     password: formData.password
   };
   try {
+    isLoading.value = true;
     const res = await axiosInstance.post('/auth/signin/', JSON.stringify(loginData));
     if (res.data.accessToken) {
-      auth.setToken(res);
-      await auth.getUser;
-      router.push({name: 'home'})
+    auth.setToken(res);
+    await auth.getUser;
+    isLoading.value = false;
+    router.push({name: 'home'})
     }
   } catch (error) {
     errorLogin.value = error.response.data.message;
+    isLoading.value = false;
     console.log(error);
   }
 }
