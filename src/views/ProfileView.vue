@@ -64,11 +64,12 @@ const isLoading = ref(true)
 const loader = 'spinner'
 const fullPage = ref(false)
 const emailNotif = ref()
- function emailVerify(){
+
+async function emailVerify(){
     const formEmail = {
     email: auth.user.email
     }
-    axiosInstance.post('user/sendVerify', JSON.stringify(formEmail))
+    await axiosInstance.post('user/sendVerify', JSON.stringify(formEmail))
     .then(function (res) {
         if(res){
             console.log(res)
